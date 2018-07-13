@@ -7,7 +7,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Debug",
+            "name": "[Rache.js] Run Local Sample",
             "program": "${workspaceFolder}/src/samples/local.ts",
             "sourceMaps": true,
             "outFiles": [
