@@ -6,9 +6,9 @@ import {
     AsyncNullable,
     CacheBody,
     Nullable
-} from "../libs/common";
+} from "../libs";
 
-import { createResourceZone } from "../libs/ResourceZone";
+import { createHub } from "../libs";
 
 class Item {
 
@@ -196,11 +196,15 @@ interface User {
 
 (async () => {
 
+    const hub = createHub();
+
     let driver = new LocalDriver();
 
-    const users = createResourceZone<User>(
+    hub.addDriver("local", driver);
+
+    const users = hub.createZone<User>(
         "users",
-        driver,
+        "local",
         JSON.stringify,
         <any> JSON.parse
     );
@@ -294,7 +298,7 @@ interface User {
 
     await users.flush(theUser, true);
 
-    driver.setUnusable();
+    driver.setUnusable(); // Set driver to be disable to test error handling.
 
     console.log(await users.read("primary", {id: 321}));
 

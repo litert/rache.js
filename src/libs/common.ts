@@ -381,12 +381,38 @@ export interface IResourceZone<T> {
     ): Promise<boolean>;
 }
 
-export interface IHub {
+export interface IResourceHub {
 
-    createResource<T>(
+    /**
+     * Add a new cache driver into hub.
+     *
+     * @param name      The name of cache driver.
+     * @param driver    The cache driver object.
+     */
+    addDriver(name: string, driver: IDriver): this;
+
+    /**
+     * Create a new zone for a resource.
+     *
+     * @param name          The unique name of resource zone.
+     * @param dirver        The name of cache driver to be used.
+     * @param serializer    The serializer of resource data.
+     * @param unserializer  The unserialize of resource data.
+     */
+    createZone<T>(
         name: string,
+        dirver: string,
         serializer: ISerializer<T>,
         unserializer: IUnserializer<T>
+    ): IResourceZone<T>;
+
+    /**
+     * Get a created resource zone.
+     *
+     * @param name The unique name of resource zone.
+     */
+    getZone<T>(
+        name: string,
     ): IResourceZone<T>;
 }
 

@@ -789,7 +789,7 @@ implements IResourceZone<T> {
     }
 }
 
-export function createResourceZone<T>(
+export function createZone<T>(
     name: string,
     driver: IDriver,
     serializer: ISerializer<T>,

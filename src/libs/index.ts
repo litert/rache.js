@@ -15,3 +15,5 @@
  */
 
 export * from "./common";
+export { createZone } from "./Zone";
+export { createHub } from "./Hub";
