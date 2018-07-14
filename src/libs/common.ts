@@ -22,20 +22,16 @@ export type AsyncArray<T> = Promise<T[]>;
 
 export type IdentityValueType = "string" | "number" | "buffer" | "boolean";
 
-export type ReadResult<T> = Nullable<ResItem<T>>;
-
-export const NO_DATA = Symbol("NO_SUCH_DATA");
-
-export type ResItem<T> = T | symbol;
+export type ReadResult<T> = Nullable<T> | undefined;
 
 /**
  * The data entity of cache item.
  *
  * @note
- *  When the entity is a symbol, it must be, and only could be the symbol,
- *  NO_DATA, which means the data entity is NEVER-EXISTED in the reality.
+ *  When the entity is undefined, it means the data entity is NEVER-EXISTED in
+ *  the reality.
  */
-export type CacheBody = Buffer | string | symbol;
+export type CacheBody = Buffer | string | undefined;
 
 export type ISerializer<T> = (data: T) => CacheBody;
 
@@ -120,9 +116,9 @@ export interface IResourceZone<T> {
      *
      *  Return a Promise with the result of following possible values:
      *
-     *  - NO_DATA symbol if that the attachment item is marked NEVER-EXISTED.
-     *  - The data record if the attachment item exists in cache.
-     *  - NULL if the attachment item is not found in cache.
+     *  - undefined, if that the attachment item is marked NEVER-EXISTED.
+     *  - The data record, if the attachment item exists in cache.
+     *  - null, if the attachment item is not found in cache.
      */
     readAttachment<TA = any>(
         name: string,
@@ -185,9 +181,9 @@ export interface IResourceZone<T> {
      *
      *  Return a Promise with the result of following possible values:
      *
-     *  - NO_DATA symbol if that the resource item is marked NEVER-EXISTED.
-     *  - The data record if the resource item exists in cache.
-     *  - NULL if the resource item is not found in cache.
+     *  - undefined, if that the resource item is marked NEVER-EXISTED.
+     *  - The data record, if the resource item exists in cache.
+     *  - null, if the resource item is not found in cache.
      */
     read(
         entry: string,
@@ -331,14 +327,14 @@ export interface IResourceZone<T> {
      * @param key The key of cache item to be check.
      * @return
      *  Return a Promise with the result of following possible values:
-     *  TNO_DATA symbol if that the data is marked NEVER-EXISTED.
-     *  TRUE if the cache item of data exists.
-     *  FALSE if the cache item doesn't exist.
+     *  undefined, if that the data is marked NEVER-EXISTED.
+     *  true, if the cache item of data exists.
+     *  false, if the cache item doesn't exist.
      */
     exists(
         entry: string,
         identity: Partial<T>
-    ): Promise<boolean | symbol>;
+    ): Promise<boolean | undefined>;
 
     /**
      * Remove a piece of resource item from cache.
@@ -430,11 +426,11 @@ export interface IDriver {
      *
      *  Return a Promise with the result of following possible values:
      *
-     *  - TNO_DATA symbol if that the data is marked NEVER-EXISTED.
-     *  - TRUE if the cache item of data exists.
-     *  - FALSE if the item is not found in cache.
+     *  - undefined, if that the data is marked NEVER-EXISTED.
+     *  - true, if the cache item of data exists.
+     *  - false, if the item is not found in cache.
      */
-    exists(key: string): Promise<boolean | symbol>;
+    exists(key: string): Promise<boolean | undefined>;
 
     /**
      * Fetch a piece of cache item by its key.
@@ -444,9 +440,9 @@ export interface IDriver {
      *
      *  Return a Promise with the result of following possible values:
      *
-     *  - NO_DATA symbol if that the data is marked NEVER-EXISTED.
-     *  - Buffer or String if the cache item of data exists.
-     *  - NULL if the item is not found in cache.
+     *  - undefined, if that the data is marked NEVER-EXISTED.
+     *  - Buffer or String, if the cache item of data exists.
+     *  - null, if the item is not found in cache.
      */
     get(key: string): AsyncNullable<CacheBody>;
 
@@ -459,9 +455,9 @@ export interface IDriver {
      *  Return a Promise with the result of a dictionary of following possible
      *  values:
      *
-     *  - NO_DATA symbol if that the data is marked NEVER-EXISTED.
-     *  - Buffer or String if the cache item of data exists.
-     *  - NULL if the item is not found in cache.
+     *  - undefined, if that the data is marked NEVER-EXISTED.
+     *  - Buffer or String, if the cache item of data exists.
+     *  - null, if the item is not found in cache.
      */
     getMulti(keys: string[]): Promise<Record<string, Nullable<CacheBody>>>;
 
@@ -472,7 +468,7 @@ export interface IDriver {
      * @param data  The data of cache item to be written.
      * @param ttl   The TTL of cache item to be written, in seconds.
      *
-     *  If the **data** is set to NO_DATA symbol, it means the data is
+     *  If the **data** is set to undefined, it means the data is
      *  NEVER-EXISTED in the reality.
      *
      * @return
@@ -491,7 +487,7 @@ export interface IDriver {
      * @param data  The key-value dictionary of cache item to be written.
      * @param ttl   The TTL of cache item to be written, in seconds.
      *
-     *  If any item in the **data** is set to NO_DATA symbol, it means the item
+     *  If any item in the **data** is set to undefined, it means the item
      *  is NEVER-EXISTED in the reality.
      *
      * @return

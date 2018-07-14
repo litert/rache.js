@@ -22,7 +22,6 @@ import {
     IdentityValueType,
     AsyncArray,
     ReadResult,
-    NO_DATA,
     CacheBody
 } from "./common";
 import { EventEmitter } from "events";
@@ -243,7 +242,7 @@ implements IResourceZone<T> {
                 this._entries[entry].buildKey(identity)
             );
 
-            if (ret === null || typeof ret === "symbol") {
+            if (ret === null || ret === undefined) {
 
                 return ret;
             }
@@ -286,7 +285,7 @@ implements IResourceZone<T> {
 
                 const item = result[identity];
 
-                if (item === null || typeof item === "symbol") {
+                if (item === null || item === undefined) {
 
                     ret.push(item);
                 }
@@ -474,7 +473,7 @@ implements IResourceZone<T> {
 
             return this._driver.set(
                 theEntry.buildKey(identity),
-                NO_DATA,
+                undefined,
                 theEntry.neTTL
             );
         }
@@ -503,7 +502,7 @@ implements IResourceZone<T> {
 
             for (let item of identities) {
 
-                caches[theEntry.buildKey(item)] = NO_DATA;
+                caches[theEntry.buildKey(item)] = undefined;
             }
 
             return this._driver.setMulti(caches, theEntry.neTTL);
@@ -519,7 +518,7 @@ implements IResourceZone<T> {
     public async exists(
         entry: string,
         identity: Record<string, any>
-    ): Promise<boolean | symbol> {
+    ): Promise<boolean | undefined> {
 
         try {
 
@@ -659,7 +658,7 @@ implements IResourceZone<T> {
                 attach.buildKey(identity)
             );
 
-            if (ret === null || typeof ret === "symbol") {
+            if (ret === null || ret === undefined) {
 
                 return ret;
             }

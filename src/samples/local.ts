@@ -2,7 +2,6 @@
 
 import {
     IDriver,
-    NO_DATA,
     AsyncNullable,
     CacheBody,
     Nullable
@@ -48,7 +47,7 @@ implements IDriver {
         this._usable = true;
     }
 
-    public async exists(key: string): Promise<boolean | symbol> {
+    public async exists(key: string): Promise<boolean | undefined> {
 
         let result = (this._data[key] && this._data[key].data) || null;
 
@@ -59,7 +58,7 @@ implements IDriver {
 
         if (result.length === 1 && result[0] === 48) {
 
-            return NO_DATA;
+            return undefined;
         }
 
         return true;
@@ -76,7 +75,7 @@ implements IDriver {
 
         if (result.length === 0) {
 
-            return NO_DATA;
+            return undefined;
         }
 
         return result;
@@ -98,7 +97,7 @@ implements IDriver {
             }
             else if (data.length === 0) {
 
-                ret[key] = NO_DATA;
+                ret[key] = undefined;
             }
             else {
 
@@ -115,7 +114,7 @@ implements IDriver {
         ttl: number
     ): Promise<boolean> {
 
-        if (typeof data === "symbol") {
+        if (data === undefined) {
 
             this._data[key] = new Item("", ttl);
         }
@@ -136,7 +135,7 @@ implements IDriver {
 
             const item = data[key];
 
-            if (typeof item === "symbol") {
+            if (item === undefined) {
 
                 this._data[key] = new Item("", ttl);
             }
