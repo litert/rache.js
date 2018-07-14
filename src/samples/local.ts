@@ -20,7 +20,7 @@ class Item {
 
         this._data = typeof data === "string" ? Buffer.from(data) : data;
 
-        this._expiredAt = ttl > 0 ? Date.now() : 0;
+        this._expiredAt = ttl > 0 ? Date.now() + 1000 * ttl : 0;
     }
 
     public isExpired(): boolean {
@@ -30,7 +30,7 @@ class Item {
 
     public get data(): Buffer | null {
 
-        return this.isExpired() ? this._data : null;
+        return this.isExpired() ? null : this._data;
     }
 }
 
@@ -248,6 +248,7 @@ interface User {
     };
 
     await users.put(theUser);
+    console.log(await users.read("primary", {id: 123}));
 
     await users.markNeverExist("primary", {id: 321});
     await users.markNeverExist("email", {email: "dddd", system: 31});

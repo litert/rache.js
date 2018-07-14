@@ -212,6 +212,7 @@ export interface IResourceZone<T> {
      * @param data       The data of resource item to be written.
      * @param identity   The identity of resource items to be written.
      *                   Default: Use identity from data
+     * @param ttl        Setup the TTL for this item. Default: <Entry TTL>
      *
      * @return
      *
@@ -224,7 +225,8 @@ export interface IResourceZone<T> {
     write(
         entry: string,
         data: T,
-        identity?: Partial<T>
+        identity?: Partial<T>,
+        ttl?: number
     ): Promise<boolean>;
 
     /**
@@ -253,6 +255,7 @@ export interface IResourceZone<T> {
      * Write all entries of a resource item into cache.
      *
      * @param data  The data of resource item to be written.
+     * @param ttl   Setup the TTL for this item. Default: <Entry TTL>
      *
      * @return
      *
@@ -263,7 +266,8 @@ export interface IResourceZone<T> {
      *  promise-result.
      */
     put(
-        data: T
+        data: T,
+        ttl?: number
     ): Promise<boolean>;
 
     /**

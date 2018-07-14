@@ -309,7 +309,8 @@ implements IResourceZone<T> {
     public async write(
         entry: string,
         data: T,
-        identity?: Record<string, any>
+        identity?: Record<string, any>,
+        ttl?: number
     ): Promise<boolean> {
 
         try {
@@ -323,7 +324,7 @@ implements IResourceZone<T> {
             return this._driver.set(
                 theEntry.buildKey(identity || <any> data),
                 this._serialize(data),
-                theEntry.ttl
+                ttl === undefined ? theEntry.ttl : ttl
             );
         }
         catch (e) {
@@ -385,7 +386,8 @@ implements IResourceZone<T> {
     }
 
     public async put(
-        data: T
+        data: T,
+        ttl?: number
     ): Promise<boolean> {
 
         try {
@@ -403,7 +405,7 @@ implements IResourceZone<T> {
                 prs.push(this._driver.set(
                     theEntry.buildKey(<any> data),
                     cacheBody,
-                    theEntry.ttl
+                    ttl === undefined ? theEntry.ttl : ttl
                 ));
             }
 
