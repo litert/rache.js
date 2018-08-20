@@ -37,7 +37,7 @@ export type ISerializer<T> = (data: T) => CacheBody;
 
 export type IUnserializer<T> = (data: Buffer | string) => T;
 
-export interface IResourceZone<T> {
+export interface IZone<T> {
 
     /**
      * The name of resource zone.
@@ -381,7 +381,7 @@ export interface IResourceZone<T> {
     ): Promise<boolean>;
 }
 
-export interface IResourceHub {
+export interface IFactory {
 
     /**
      * Add a new cache driver into hub.
@@ -404,7 +404,7 @@ export interface IResourceHub {
         dirver: string,
         serializer: ISerializer<T>,
         unserializer: IUnserializer<T>
-    ): IResourceZone<T>;
+    ): IZone<T>;
 
     /**
      * Get a created resource zone.
@@ -413,7 +413,7 @@ export interface IResourceHub {
      */
     getZone<T>(
         name: string,
-    ): IResourceZone<T>;
+    ): IZone<T>;
 }
 
 export interface IDriver {
@@ -530,3 +530,13 @@ export interface IDriver {
      */
     usable(): boolean;
 }
+
+/**
+ * @deprecated Use IFactory instead.
+ */
+export type IResourceHub = IFactory;
+
+/**
+ * @deprecated Use IZone instead.
+ */
+export type IResourceZone<T> = IZone<T>;

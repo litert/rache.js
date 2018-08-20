@@ -15,20 +15,20 @@
  */
 
 import {
-    IResourceHub,
-    IResourceZone,
+    IFactory,
+    IZone,
     ISerializer,
     IUnserializer,
     IDriver
 } from "./common";
 import { createZone } from "./Zone";
 
-class ResourceHub
-implements IResourceHub {
+class Factory
+implements IFactory {
 
     private _drivers: Record<string, IDriver>;
 
-    private _zones: Record<string, IResourceZone<any>>;
+    private _zones: Record<string, IZone<any>>;
 
     public constructor() {
 
@@ -54,7 +54,7 @@ implements IResourceHub {
         driver: string,
         serializer: ISerializer<T>,
         unserializer: IUnserializer<T>
-    ): IResourceZone<T> {
+    ): IZone<T> {
 
         if (this._zones[name]) {
 
@@ -76,7 +76,7 @@ implements IResourceHub {
 
     public getZone<T>(
         name: string,
-    ): IResourceZone<T> {
+    ): IZone<T> {
 
         if (!this._zones[name]) {
 
@@ -87,7 +87,15 @@ implements IResourceHub {
     }
 }
 
-export function createHub(): IResourceHub {
+/**
+ * @deprecated Use createFactory instead.
+ */
+export function createHub(): IFactory {
 
-    return new ResourceHub();
+    return new Factory();
+}
+
+export function createFactory(): IFactory {
+
+    return new Factory();
 }

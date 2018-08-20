@@ -15,7 +15,7 @@
  */
 
 import {
-    IResourceZone,
+    IZone,
     IDriver,
     ISerializer,
     IUnserializer,
@@ -132,7 +132,7 @@ function compileCacheKeyBuilder(
 
 class ResourceZone<T>
 extends EventEmitter
-implements IResourceZone<T> {
+implements IZone<T> {
 
     private _name: string;
 
@@ -795,7 +795,7 @@ export function createZone<T>(
     driver: IDriver,
     serializer: ISerializer<T>,
     unserializer: IUnserializer<T>
-): IResourceZone<T> {
+): IZone<T> {
 
     return new ResourceZone(
         name,
